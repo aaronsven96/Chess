@@ -9,7 +9,6 @@ class Piece {
         this.type = type;
         this.pos = pos;
         this.white = white;
-
     }
 
 }
