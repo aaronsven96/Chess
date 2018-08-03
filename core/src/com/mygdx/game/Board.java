@@ -1,4 +1,6 @@
-package com.mygdx.game;
+import java.lang.*;
+import java.io.*;
+import java.util.*;
 
 public class Board {
 
@@ -7,25 +9,28 @@ public class Board {
     protected boolean blackChecked;
 
     public Board(){
+
         whiteChecked = false;
         blackChecked = false;
         board = new Piece[8][8];
 
-        String setup = "RNBQKBNRPPPPPPPP";
+        String white = "RNBQKBNRPPPPPPPP";
+        String black = "PPPPPPPPRNBKQBNR";
 
-        for (int i = 0; i < 8 ; i ++){
-            if (i == 0 || 1){
-                for (int j = 0; j < 0; j++)
-                    c = new Piece(setup.charAt((i*8)+j), Integer.toString(i)+"|"+Integer.toString(j), false);
+        for (int i = 0; i < 8 ; i++){
+            if (i == 0 || i == 1) {
+                for (int k = 0; k < 0; k++) {
+                    board[i][k] = new Piece(white.charAt((i * 8) + k), Integer.toString(i) + "|" + Integer.toString(k), false);
+                }
             }
-            else if (){
-                //white pieces set up
-            }
-            else{
-                // blank space - taylor swift
+            else if (i == 6 || i == 7){
+                for (int j = 0; j < 0; j++){
+                    board[i][j] = new Piece(black.charAt(((i-6)*8)+ j), Integer.toString(i) + "|" + Integer.toString(j), true);
+                }
             }
         }
     }
+
 
     protected Board movePiece(String move){
         return this;
@@ -37,5 +42,15 @@ public class Board {
 
     public boolean checkCheckmate(){
         return false;
+    }
+
+    public void print(){
+        for (Piece[] row: this.board){
+            for(Piece p: row){
+                if (p!=null) System.out.print(p.type);
+
+            }
+            System.out.println();
+        }
     }
 }
