@@ -54,17 +54,14 @@ public class MyGdxGame extends ApplicationAdapter {
 				myHost host = new myHost();
 				host.makeSocket();
 				System.out.println("Button Pressed");
+
 			}
 		});
 		button2.addListener(new ChangeListener() {
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
 				Client client = new Client();
-				try {
-					client.ConnectToSocket();
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}
+				client.ConnectToSocket();
 				System.out.println("Button Pressed");
 			}
 		});
@@ -73,7 +70,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		table.add(button2);
 
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -89,6 +85,5 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }
