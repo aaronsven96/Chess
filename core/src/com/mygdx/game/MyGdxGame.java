@@ -23,15 +23,17 @@ import java.awt.Button;
 import java.awt.Label;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	Label label;
 	Stage stage;
-	
+	ConcurrentLinkedQueue<String> data;
 	@Override
 	public void create () {
+		data=new ConcurrentLinkedQueue<String>();
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		Table table = new Table();
@@ -61,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
 				Client client = new Client();
-				client.ConnectToSocket();
+				client.ConnectToSocket(data);
 				System.out.println("Button Pressed");
 			}
 		});

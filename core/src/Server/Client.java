@@ -27,7 +27,7 @@ public class Client {
     ConcurrentLinkedQueue<String> data;
     public void ConnectToSocket(final ConcurrentLinkedQueue<String> data) {
         this.data=data;
-        new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 Socket socket = null;
@@ -46,7 +46,7 @@ public class Client {
                     }
                 }
             }
-        };
+        }).start();
 
     }
     private String  readBytes(InputStream stream) throws IOException {
