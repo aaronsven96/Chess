@@ -19,9 +19,11 @@ public class Board {
         String white = "RNBQKBNRPPPPPPPP";
         String black = "PPPPPPPPRNBKQBNR";
 
+
+        // Board setup
         for (int i = 0; i < 8 ; i++){
             if (i == 0 || i == 1) {
-                for (int k = 0; k < 0; k++) {
+                for (int k = 0; k < 8; k++) {
                     board[i][k] = new Piece(white.charAt((i * 8) + k), Integer.toString(i) + "|" + Integer.toString(k), false);
                 }
             }
