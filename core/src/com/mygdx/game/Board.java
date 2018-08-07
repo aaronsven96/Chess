@@ -41,8 +41,15 @@ public class Board {
     }
 
 
-    protected Board movePiece(String move){
+    protected Board recieveMove(String move){
+        String start = move.substring(0,1);
+        String end = move.substring(2,3);
+
         return this;
+    }
+
+    protected String sendMove(){
+        return "3134";
     }
 
     public boolean is() {
