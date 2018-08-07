@@ -21,20 +21,20 @@ public class Board {
 
 
         // Board setup details
-        for (int i = 0; i < 8 ; i++){
-            if (i == 0 || i == 1) {
-                for (int k = 0; k < 8; k++) {
-                    board[i][k] = new Piece(black.charAt((k+(i*8)-1)), false,  i, k);
+        for (int x = 0; x < 8 ; x++){
+            if (x == 0 || x == 1) {
+                for (int y = 0; y < 8; y++) {
+                    board[x][y] = new Piece(black.charAt((y+(x*8)-1)), false,  x, y);
                 }
             }
-            else if (i == 6 || i == 7){
-                for (int k = 0; k < 8; k++){
-                    board[i][k] = new Piece(white.charAt((k+(i*8)-1)), true,  i, k);
+            else if (x == 6 || x == 7){
+                for (int y = 0; y < 8; y++){
+                    board[x][y] = new Piece(white.charAt((y+(x*8)-1)), true,  x, y);
                 }
             }
             else{
-                for (int k = 0; k<8; k++){
-                    board[i][k] = new Piece('B', false, i, k);
+                for (int y = 0; y<8; y++){
+                    board[x][y] = new Piece('B', false, x, y);
                 }
             }
         }
@@ -45,11 +45,17 @@ public class Board {
         String start = move.substring(0,1);
         String end = move.substring(2,3);
 
+
+
         return this;
     }
 
     protected String sendMove(){
         return "3134";
+    }
+
+    protected boolean checkValidMove(String start, String end){
+
     }
 
     public boolean is() {
