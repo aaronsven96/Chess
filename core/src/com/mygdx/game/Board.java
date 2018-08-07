@@ -9,12 +9,15 @@ public class Board {
     protected Piece[][] board;
     protected boolean whiteChecked;
     protected boolean blackChecked;
+    protected boolean whiteTurn;
 
     public Board(){
 
+        whiteTurn = true;
         whiteChecked = false;
         blackChecked = false;
         board = new Piece[8][8];
+
 
         String white = "RNBQKBNRPPPPPPPP";
         String black = "PPPPPPPPRNBKQBNR";
@@ -41,22 +44,18 @@ public class Board {
     }
 
 
-    protected Board receiveMove(String move){
-        String start = move.substring(0,1);
-        String end = move.substring(2,3);
+    protected Board receiveMove(Piece p, int x2, int y2){
+        if (whiteTurn && !whiteChecked && p.white){         // check if white is eligible to move
+            if(p.x - x2 == p.y - y2){                       // check if bishop/queen/pawn
 
+            }
+        }
+        else if (!whiteTurn && !blackChecked && !p.white && p.type != 'B'){
 
-
+        }
         return this;
     }
 
-    protected String sendMove(){
-        return "3134";
-    }
-
-    protected boolean checkValidMove(String start, String end){
-
-    }
 
     public boolean is() {
         return blackChecked;
