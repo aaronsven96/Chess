@@ -57,12 +57,16 @@ public class Board {
         if (whiteTurn && !whiteChecked && p.white){         // check if white is eligible to move
             if(p.x - x2 == p.y - y2){
                 if ((p.x - x2 > 1) && (p.type != 'P')){      // make sure not pawn
-
+                    if (isPathValid(p, x2, y2)){
+                        board[x2][y2] = p;
+                    }
                 }
                 else if (p.x - x2 == 1 && ((p.type == ('Q') || p.type =='B' || p.type == 'P'))){
                     if (p.type == 'P' && isEnemyInCell(x2, y2, p.white)){   // if pawn and able to
                         board[x2][y2] = p;                                  // capture, moves piece
                     }
+
+
                 }
                 else{
 
@@ -75,6 +79,11 @@ public class Board {
         return this;
     }
 
+
+    // looks at destination cell and returns true if the path to the destination is empty and valid
+    public boolean isPathValid(Piece p, int x2, int y2){
+        return false;
+    }
 
     public boolean is() {
         return blackChecked;
