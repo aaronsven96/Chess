@@ -37,17 +37,34 @@ public class Board {
             }
             else{
                 for (int y = 0; y<8; y++){
-                    board[x][y] = new Piece('B', false, x, y);
+                    board[x][y] = new Piece('B',false, x, y);
                 }
             }
         }
     }
 
 
+    // returns true if the piece in cell is opposite white
+    protected boolean isEnemyInCell(int x, int y, boolean white){
+        if (this.board[x][y].type != 'B') {
+            return this.board[x][y].white != white;
+        }
+        return true;
+    }
+
+    // fill this out
     protected Board receiveMove(Piece p, int x2, int y2){
         if (whiteTurn && !whiteChecked && p.white){         // check if white is eligible to move
-            if(p.x - x2 == p.y - y2){                       // check if bishop/queen/pawn
+            if(p.x - x2 == p.y - y2){
+                if ((p.x - x2 > 1) && (p.type != 'P')){      // make sure not pawn
 
+                }
+                else if (p.x - x2 == 1){
+
+                }
+                else{
+
+                }
             }
         }
         else if (!whiteTurn && !blackChecked && !p.white && p.type != 'B'){
