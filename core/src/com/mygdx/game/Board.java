@@ -24,12 +24,17 @@ public class Board {
         for (int i = 0; i < 8 ; i++){
             if (i == 0 || i == 1) {
                 for (int k = 0; k < 8; k++) {
-                    board[i][k] = new Piece(white.charAt((i * 8) + k), Integer.toString(i) + "|" + Integer.toString(k), false);
+                    board[i][k] = new Piece(black.charAt((k+(i*8)-1)), false,  i, k);
                 }
             }
             else if (i == 6 || i == 7){
-                for (int j = 0; j < 8; j++){
-                    board[i][j] = new Piece(black.charAt(((i-6)*8)+ j), Integer.toString(i) + "|" + Integer.toString(j), true);
+                for (int k = 0; k < 8; k++){
+                    board[i][k] = new Piece(white.charAt((k+(i*8)-1)), true,  i, k);
+                }
+            }
+            else{
+                for (int k = 0; k<8; k++){
+                    board[i][k] = new Piece('B', false, i, k);
                 }
             }
         }
