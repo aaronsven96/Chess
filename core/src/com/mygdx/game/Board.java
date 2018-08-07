@@ -20,7 +20,7 @@ public class Board {
         String black = "PPPPPPPPRNBKQBNR";
 
 
-        // Board setup
+        // Board setup details
         for (int i = 0; i < 8 ; i++){
             if (i == 0 || i == 1) {
                 for (int k = 0; k < 8; k++) {
