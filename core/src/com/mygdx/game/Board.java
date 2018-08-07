@@ -41,7 +41,7 @@ public class Board {
     }
 
 
-    protected Board recieveMove(String move){
+    protected Board receiveMove(String move){
         String start = move.substring(0,1);
         String end = move.substring(2,3);
 
