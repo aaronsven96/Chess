@@ -1,8 +1,6 @@
 package com.mygdx.game;
 
 import java.lang.*;
-import java.io.*;
-import java.util.*;
 
 public class Board {
 
@@ -49,7 +47,7 @@ public class Board {
 
 
     // returns true if the piece in cell is opposite color
-    protected boolean isEnemyInCell(int x, int y, boolean white){
+    private boolean isEnemyInCell(int x, int y, boolean white){
         if (this.board[x][y].getType() != 'B') {
             return this.board[x][y].isWhite() != white;
         }
@@ -69,31 +67,41 @@ public class Board {
 
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
-    public boolean isPathValid(Piece p, int x2, int y2){
+    private boolean isMoveValid(Piece p, int x2, int y2) {
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
 
         if (dx == dy) {           // check if moving along diagonal
-            if (p.getType() != 'Q' || p.getType()== 'P' ||p.getType()=='B'||p.getType()=='K'){
+            if (p.getType() == 'R' || p.getType() == 'N') {
                 return false;
             }
             if (dx == 1 && p.getType() == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
                 return true;
             }
+            return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2));
+
+
+
+
+
         }
-
         return false;
     }
 
-    public boolean is() {
-        return blackChecked;
+    private boolean isDiagPathEmpty(int x1, int y1, int x2, int y2){
+        int i = (x1-x2>0)?1:-1;
+        int j = (y1-y2>0)?1:-1;
+        int dx = Math.abs(x1-x2);
+        for (int l = 0; dx > l; l++) {
+            if (board[x1][y1].getType() != 'E') return false;
+            x1 += i;
+            y1 += j;
+        }
+        return true;
+
     }
 
-    public boolean checkCheckmate(){
-        return false;
-    }
-
-    public void print(){
+    void print(){
         for (Piece[] row: this.board){
             for(Piece p: row){
                 if (p!=null) System.out.print(p.getType());
