@@ -1,9 +1,9 @@
 package com.mygdx.game;
 
 class Piece {
-    protected char type;
-    protected boolean white;
-    protected int x, y;
+    private char type;
+    private boolean white;
+    private int x, y;
 
     /*
     * @param type   type of piece to be added
@@ -15,6 +15,22 @@ class Piece {
         this.white = white;
         this.x = x;
         this.y = y;
+    }
+
+    protected int getX(){
+        return this.x;
+    }
+
+    protected int getY(){
+        return this.y;
+    }
+
+    protected char getType(){
+        return this.type;
+    }
+
+    protected boolean isWhite(){
+        return this.white;
     }
 
     public String toString(){

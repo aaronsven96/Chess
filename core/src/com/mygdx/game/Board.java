@@ -11,11 +11,15 @@ public class Board {
     protected boolean blackChecked;
     protected boolean whiteTurn;
 
+
+
     public Board(){
 
         whiteTurn = true;
         whiteChecked = false;
         blackChecked = false;
+
+
         board = new Piece[8][8];
 
 
@@ -37,43 +41,27 @@ public class Board {
             }
             else{
                 for (int y = 0; y<8; y++){
-                    board[x][y] = new Piece('B',false, x, y);
+                    board[x][y] = new Piece('E',false, x, y);
                 }
             }
         }
     }
 
 
-    // returns true if the piece in cell is opposite white
+    // returns true if the piece in cell is opposite color
     protected boolean isEnemyInCell(int x, int y, boolean white){
-        if (this.board[x][y].type != 'B') {
-            return this.board[x][y].white != white;
+        if (this.board[x][y].getType() != 'B') {
+            return this.board[x][y].isWhite() != white;
         }
         return false;
     }
 
     // Given a piece and a destination, moves the piece to the cell if valid move
     protected Board movePiece(Piece p, int x2, int y2){
-        if (whiteTurn && !whiteChecked && p.white){         // check if white is eligible to move
-            if(p.x - x2 == p.y - y2){
-                if ((p.x - x2 > 1) && (p.type != 'P')){      // make sure not pawn
-                    if (isPathValid(p, x2, y2)){
-                        board[x2][y2] = p;
-                    }
-                }
-                else if (p.x - x2 == 1 && ((p.type == ('Q') || p.type =='B' || p.type == 'P'))){
-                    if (p.type == 'P' && isEnemyInCell(x2, y2, p.white)){   // if pawn and able to
-                        board[x2][y2] = p;                                  // capture, moves piece
-                    }
+        if (whiteTurn && p.isWhite()){         // check if white is eligible to move
 
-
-                }
-                else{
-
-                }
-            }
         }
-        else if (!whiteTurn && !blackChecked && !p.white && p.type != 'B'){
+        else if (!whiteTurn && !blackChecked && !p.isWhite() && p.getType() != 'E'){
 
         }
         return this;
@@ -82,6 +70,18 @@ public class Board {
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
     public boolean isPathValid(Piece p, int x2, int y2){
+        int dx = Math.abs(p.getX() - x2);
+        int dy = Math.abs(p.getY() - y2);
+
+        if (dx == dy) {           // check if moving along diagonal
+            if (p.getType() != 'Q' || p.getType()== 'P' ||p.getType()=='B'||p.getType()=='K'){
+                return false;
+            }
+            if (dx == 1 && p.getType() == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -96,7 +96,7 @@ public class Board {
     public void print(){
         for (Piece[] row: this.board){
             for(Piece p: row){
-                if (p!=null) System.out.print(p.type);
+                if (p!=null) System.out.print(p.getType());
 
             }
             System.out.println();
