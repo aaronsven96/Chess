@@ -8,8 +8,7 @@ public class Board {
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
-
-
+    
 
     public Board(){
 
@@ -68,6 +67,7 @@ public class Board {
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
     private boolean isMoveValid(Piece p, int x2, int y2) {
+
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
 
@@ -79,11 +79,6 @@ public class Board {
                 return true;
             }
             return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2));
-
-
-
-
-
         }
         return false;
     }
@@ -98,7 +93,6 @@ public class Board {
             y1 += j;
         }
         return true;
-
     }
 
     void print(){
