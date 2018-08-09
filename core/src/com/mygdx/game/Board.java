@@ -8,7 +8,7 @@ public class Board {
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
-    
+
 
     public Board(){
 
@@ -70,25 +70,46 @@ public class Board {
 
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
+        char tp = p.getType();
 
+        
         if (dx == dy) {           // check if moving along diagonal
-            if (p.getType() == 'R' || p.getType() == 'N') {
+            if (tp == 'R' || tp == 'N') {
                 return false;
             }
-            if (dx == 1 && p.getType() == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
+            if (dx == 1 && tp == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
                 return true;
             }
-            return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2));
+            return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2, p.isWhite()));
         }
+        else if (dx == 0){
+            return isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite());
+
+        }
+
         return false;
     }
 
-    private boolean isDiagPathEmpty(int x1, int y1, int x2, int y2){
-        int i = (x1-x2>0)?1:-1;
-        int j = (y1-y2>0)?1:-1;
+    private  boolean isVertPathEmpty(int x1, int y1, int y2, boolean white){
+
+        int i = (y1 - y2 < 0)? -1:1;
+        int dy = Math.abs(y1 - y2);
+
+        return true;
+
+    }
+
+    private boolean isDiagPathEmpty(int x1, int y1, int x2, int y2, boolean white){
+        int i = (x1-x2>0)?-1:1;
+        int j = (y1-y2>0)?-1:1;
         int dx = Math.abs(x1-x2);
         for (int l = 0; dx > l; l++) {
-            if (board[x1][y1].getType() != 'E') return false;
+            if ((board[x1][y1].getType() != 'E') && l != dx-1){
+
+
+                return false;
+            }
+
             x1 += i;
             y1 += j;
         }
