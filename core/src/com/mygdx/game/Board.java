@@ -4,7 +4,7 @@ import java.lang.*;
 
 public class Board {
 
-    protected Piece[][] board;
+    protected Cell[][] board;
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
@@ -15,9 +15,7 @@ public class Board {
         whiteTurn = true;
         whiteChecked = false;
         blackChecked = false;
-
-
-        board = new Piece[8][8];
+        board = new Cell[8][8];
 
 
         String whiteP = "RNBQKBNRPPPPPPPP";
@@ -28,17 +26,18 @@ public class Board {
         for (int x = 0; x < 8 ; x++){
             if (x == 0 || x == 1) {
                 for (int y = 0; y < 8; y++) {
-                    board[x][y] = new Piece(blackP.charAt((y+(x*8)-1)), false,  x, y);
+                    board[x][y] = new Cell(true, new Piece(whiteP.charAt((x*8) + y), true, x, y));
                 }
             }
             else if (x == 6 || x == 7){
                 for (int y = 0; y < 8; y++){
-                    board[x][y] = new Piece(whiteP.charAt((y+(x*8)-1)), true,  x, y);
+                    board[x][y] = new Cell(true, new Piece(blackP.charAt(((x-6)*8) + y), false, x, y));
                 }
             }
             else{
                 for (int y = 0; y<8; y++){
-                    board[x][y] = new Piece('E',false, x, y);
+                    board[x][y] = new Cell(false);
+
                 }
             }
         }
@@ -47,18 +46,18 @@ public class Board {
 
     // returns true if the piece in cell is opposite color
     private boolean isEnemyInCell(int x, int y, boolean white){
-        if (this.board[x][y].getType() != 'B') {
-            return this.board[x][y].isWhite() != white;
+        if (board[x][y].isOccupied()){
+            return board[x][y].getPiece().isWhite() != white;
         }
         return false;
     }
 
     // Given a piece and a destination, moves the piece to the cell if valid move
-    protected Board movePiece(Piece p, int x2, int y2){
-        if (whiteTurn && p.isWhite()){         // check if white is eligible to move
+    protected Board movePiece(Cell c, int x2, int y2){
+        if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
 
         }
-        else if (!whiteTurn && !blackChecked && !p.isWhite() && p.getType() != 'E'){
+        else if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
 
         }
         return this;
@@ -128,9 +127,9 @@ public class Board {
     }
 
     void print(){
-        for (Piece[] row: this.board){
-            for(Piece p: row){
-                if (p!=null) System.out.print(p.getType());
+        for (Cell[] row: board){
+            for(Cell p: row){
+                if (p!=null) System.out.print(p.getPiece().getType());
 
             }
             System.out.println();
