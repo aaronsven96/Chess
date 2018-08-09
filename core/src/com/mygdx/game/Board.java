@@ -73,7 +73,11 @@ public class Board {
         char tp = p.getType();
 
 
-        if (dx == dy) {                 // check if moving along diagonal
+        // check if king can move to that position without ben placed in check
+        if (p.getType() == 'K'){
+
+        }
+        else if (dx == dy) {                 // check if moving along diagonal
             if (tp == 'R' || tp == 'N') {
                 return false;
             }
@@ -84,6 +88,9 @@ public class Board {
         }
         else if (dx == 0){
             if (tp == 'B' || tp == 'N') return false;
+            else if (tp == 'P'){            // check pawn moves
+
+            }
             else return isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite());
         }
         return false;
@@ -94,7 +101,10 @@ public class Board {
         int i = (y1 - y2 < 0)? -1:1;    // y increment
         int dy = Math.abs(y1 - y2);     // times to increment
 
-        
+        for (int j = 0; j < dy; j++ ){
+            if (board[x1][y1].getType() != 'E'){
+            }
+        }
 
         return true;
 
