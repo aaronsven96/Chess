@@ -72,44 +72,45 @@ public class Board {
         int dy = Math.abs(p.getY() - y2);
         char tp = p.getType();
 
-        
-        if (dx == dy) {           // check if moving along diagonal
+
+        if (dx == dy) {                 // check if moving along diagonal
             if (tp == 'R' || tp == 'N') {
                 return false;
             }
-            if (dx == 1 && tp == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
+            else if (dx == 1 && tp == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
                 return true;
             }
             return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2, p.isWhite()));
         }
         else if (dx == 0){
-            return isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite());
-
+            if (tp == 'B' || tp == 'N') return false;
+            else return isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite());
         }
-
         return false;
     }
 
     private  boolean isVertPathEmpty(int x1, int y1, int y2, boolean white){
 
-        int i = (y1 - y2 < 0)? -1:1;
-        int dy = Math.abs(y1 - y2);
+        int i = (y1 - y2 < 0)? -1:1;    // y increment
+        int dy = Math.abs(y1 - y2);     // times to increment
+
+        
 
         return true;
 
     }
 
     private boolean isDiagPathEmpty(int x1, int y1, int x2, int y2, boolean white){
-        int i = (x1-x2>0)?-1:1;
-        int j = (y1-y2>0)?-1:1;
-        int dx = Math.abs(x1-x2);
+
+        int i = (x1-x2>0)?-1:1;         // increment for x distance
+        int j = (y1-y2>0)?-1:1;         // increment for y distance
+        int dx = Math.abs(x1-x2);       // how many times to increment
+
         for (int l = 0; dx > l; l++) {
-            if ((board[x1][y1].getType() != 'E') && l != dx-1){
-
-
+            if ((board[x1][y1].getType() != 'E')){
+                if (l == dx - 1)return isEnemyInCell(x1, y1, white);
                 return false;
             }
-
             x1 += i;
             y1 += j;
         }
