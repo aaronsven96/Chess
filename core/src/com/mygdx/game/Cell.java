@@ -9,7 +9,6 @@ class Cell {
         this(occupied, null);
     }
     public Cell(boolean occupied, Piece t){
-
         this.piece = t;
         this.occupied = occupied;
     }
