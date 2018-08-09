@@ -29,6 +29,14 @@ class Piece {
         return this.white;
     }
 
+    protected void setX(int x){
+        this.x = x;
+    }
+
+    protected void setY(int y){
+        this.y = y;
+    }
+
     public String toString(){
         return "TYPE: " + type + " POS: (" + x + ", " + y + ")" + "WHITE?: " + white;
     }

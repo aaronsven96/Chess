@@ -36,7 +36,7 @@ public class Board {
             }
             else{
                 for (int y = 0; y<8; y++){
-                    board[x][y] = new Cell(false);
+                    board[x][y] = new Cell(false, new Piece('E', false, x, y));
 
                 }
             }
@@ -44,11 +44,20 @@ public class Board {
     }
 
     // Given a piece and a destination, moves the piece to the cell if valid move
-    protected Board movePiece(Cell c, int x2, int y2){
+    protected Board movePiece(int x1, int y1, int x2, int y2){
+        Cell c = board[x1][y1];
         if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
-
+            if (isMoveValid(c.getPiece(), x2, y2)){
+                board[x1][y1] = new Cell(false, new Piece('E', false, x2, y2));
+                c.getPiece().setX(x2);
+                c.getPiece().setY(y2);
+                board[x2][y2] = c;
+                System.out.println("3nbiuh3obdvbiu43");
+            }
+            System.out.println("not valid");
         }
-        else if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
+        System.out.println(whiteTurn + " " + c.getPiece().isWhite());
+        if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
 
         }
         return this;
