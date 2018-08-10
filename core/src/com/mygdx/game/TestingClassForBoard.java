@@ -18,8 +18,9 @@ public class TestingClassForBoard {
             int y2 = Character.getNumericValue(next.charAt(3));
 
             aBoard = aBoard.movePiece(x1,y1,x2,y2);
+            //System.out.println(aBoard.getCell(x1, y1).getPiece());
             aBoard.print();
-            System.out.println("");
+            System.out.println();
 
 
         }

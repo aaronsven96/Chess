@@ -38,7 +38,7 @@ class Piece {
     }
 
     public String toString(){
-        return "TYPE: " + type + " POS: (" + x + ", " + y + ")" + "WHITE?: " + white;
+        return "TYPE: " + type + " POS: (" + x + ", " + y + ")" + " WHITE: " + white;
     }
 
 }

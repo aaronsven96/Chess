@@ -35,7 +35,7 @@ public class Board {
                 }
             }
             else{
-                for (int y = 0; y<8; y++){
+                for (int y= 0; y<8; y++){
                     board[x][y] = new Cell(false, new Piece('E', false, x, y));
 
                 }
@@ -48,15 +48,15 @@ public class Board {
         Cell c = board[x1][y1];
         if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
             if (isMoveValid(c.getPiece(), x2, y2)){
-                board[x1][y1] = new Cell(false, new Piece('E', false, x2, y2));
+                board[y1][x1] = new Cell(false, new Piece('E', false, x2, y2));
                 c.getPiece().setX(x2);
                 c.getPiece().setY(y2);
-                board[x2][y2] = c;
-                System.out.println("3nbiuh3obdvbiu43");
+                board[y2][x2] = c;
+
             }
-            System.out.println("not valid");
+
         }
-        System.out.println(whiteTurn + " " + c.getPiece().isWhite());
+
         if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
 
         }
@@ -65,11 +65,9 @@ public class Board {
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
     private boolean isMoveValid(Piece p, int x2, int y2) {
-
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
         char tp = p.getType();
-
 
         // check if king can move to that position without ben placed in check - fill out
         if (tp == 'K'){
@@ -100,12 +98,12 @@ public class Board {
                     // or if pawn is only trying to move 1 space
                     if ((p.isWhite() && p.getX() == 1) || (!p.isWhite()
                             && p.getX() == 6) || dy == 1){
-                         return (isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite()));
+                        return (isVertPathEmpty(p.getX(), p.getY(), y2, p));
                     }
                 }
                 return false;
             }
-            else return isVertPathEmpty(p.getX(), p.getY(), y2, p.isWhite());
+            else return isVertPathEmpty(p.getX(), p.getY(), y2, p);
         }
         // fill out this
         else if (dy == 0){
@@ -115,21 +113,25 @@ public class Board {
         return false;
     }
 
-    private  boolean isVertPathEmpty(int x1, int y1, int y2, boolean white){
+    private  boolean isVertPathEmpty(int x1, int y1, int y2, Piece p){
 
-        int i = (y1 - y2 < 0)? -1:1;        // y increment
+
+        System.out.println("x1: "+x1+" y1: "+y1+" y2: "+y2);
+        int i = (y1 - y2 > 0)? -1:1;        // y increment
         int dy = Math.abs(y1 - y2);         // times to increment
 
         for (int j = 0; j < dy; j++ ){
-            if (board[x1][y1].isOccupied() && j == dy - 1 && isEnemyInCell(x1, y1, white)){
+            y1 += i;
+            if (board[y1][x1].isOccupied() && j == dy - 1 && isEnemyInCell(x1, y1, p.isWhite()) &&
+                    p.getType() != 'P'){
                 return true;
             }
-            else if (board[x1][y1].isOccupied()){
+            else if (board[y1][x1].isOccupied()){
+                System.out.println(board[y1][x1].getPiece());
+                System.out.println();
                 return false;
             }
-            y1 += i;
         }
-
         return true;
 
     }
@@ -157,6 +159,10 @@ public class Board {
             return board[x][y].getPiece().isWhite() != white;
         }
         return false;
+    }
+
+    protected Cell getCell(int x, int y){
+        return board[x][y];
     }
 
     void print(){
