@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
 import java.lang.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class Board {
 
@@ -8,7 +11,7 @@ public class Board {
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
-
+    protected Stack<Integer> moves;
 
     public Board(){
 
@@ -19,24 +22,24 @@ public class Board {
 
 
         String whiteP = "RNBQKBNRPPPPPPPP";
-        String blackP = "PPPPPPPPRNBKQBNR";
+        String blackP = "PPPPPPPPRNBQKBNR";
 
 
         // Board setup details
         for (int x = 0; x < 8 ; x++){
             if (x == 0 || x == 1) {
                 for (int y = 0; y < 8; y++) {
-                    board[x][y] = new Cell(true, new Piece(whiteP.charAt((x*8) + y), true, x, y));
+                    board[y][x] = new Cell(true, new Piece(whiteP.charAt((x*8) + y), true, x, y));
                 }
             }
             else if (x == 6 || x == 7){
                 for (int y = 0; y < 8; y++){
-                    board[x][y] = new Cell(true, new Piece(blackP.charAt(((x-6)*8) + y), false, x, y));
+                    board[y][x] = new Cell(true, new Piece(blackP.charAt(((x-6)*8) + y), false, x, y));
                 }
             }
             else{
                 for (int y= 0; y<8; y++){
-                    board[x][y] = new Cell(false, new Piece('E', false, x, y));
+                    board[y][x] = new Cell(false, new Piece('E', false, x, y));
 
                 }
             }
@@ -45,17 +48,18 @@ public class Board {
 
     // Given a piece and a destination, moves the piece to the cell if valid move
     protected Board movePiece(int x1, int y1, int x2, int y2){
-        Cell c = board[x1][y1];
+        Cell c = board[y1][x1];
+
         if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
             if (isMoveValid(c.getPiece(), x2, y2)){
-                board[y1][x1] = new Cell(false, new Piece('E', false, x2, y2));
-                c.getPiece().setX(x2);
-                c.getPiece().setY(y2);
                 board[y2][x2] = c;
-
+                c.getPiece().setY(y2);
+                c.getPiece().setX(x2);
+                board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
             }
 
         }
+
 
         if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
 
@@ -65,92 +69,92 @@ public class Board {
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
     private boolean isMoveValid(Piece p, int x2, int y2) {
+        char pt = p.getType();
+
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
-        char tp = p.getType();
 
-        // check if king can move to that position without ben placed in check - fill out
-        if (tp == 'K'){
+        if (pt == 'K'){
+            // check king moves
+        }
+        else if (pt ==  'N'){
+            // check knight moves
+        }
+
+        else if (pt == 'B'){
+            // check diagonal paths
+        }
+        else if (pt == 'Q'){
+            if (dy == dx){
+                // check diagonal paths
+            }
+            else if (dy == 0){
+                // check horizontal path
+            }
+            else if (dx == 0){
+                //check vertical paths
+            }
+        }
+        else if (pt == 'R' ){
+            if (dy == 0){
+                // check horizontal paths
+            }
+            else if (dy == 0){
+                // check vertical paths
+            }
 
         }
-        // check knight moves - fill out
-        else if (tp == 'N'){
+        else if (pt == 'P'){
+            // check for en passant
+            if (false){
 
-        }
-        else if (dx == dy) {                    // check if moving along diagonal
-            if (tp == 'R' || tp == 'N') {       // invalid move for knights and rooks
-                return false;
             }
-            else if (tp == 'P' && dx>1){        // invalid move for pawn
-                return false;
+            else if (dx == dy && dx == 1){
+                return isEnemyInCell(x2, y2, p.isWhite());
             }
-            else if (dx == 1 && tp == 'P' && isEnemyInCell(x2, y2, p.isWhite())) {
+            else if (dy == 0 && dx < 3){
+                ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
+                for (Cell c: path){
+                    if (c.isOccupied()) return false;
+                }
                 return true;
             }
-            return (isDiagPathEmpty(p.getX(), p.getY(), x2, y2, p.isWhite()));
         }
-
-        else if (dx == 0){
-            if (tp == 'B' || tp == 'N') return false;
-            else if (tp == 'P'){                // check pawn moves
-                if (dy <= 2){
-                    // check if possible to move 2 spaces as starting spawn
-                    // or if pawn is only trying to move 1 space
-                    if ((p.isWhite() && p.getX() == 1) || (!p.isWhite()
-                            && p.getX() == 6) || dy == 1){
-                        return (isVertPathEmpty(p.getX(), p.getY(), y2, p));
-                    }
-                }
-                return false;
-            }
-            else return isVertPathEmpty(p.getX(), p.getY(), y2, p);
-        }
-        // fill out this
-        else if (dy == 0){
-            if (tp == 'B' || tp == 'N' || tp == 'P') return false;
-        }
-
         return false;
     }
 
-    private  boolean isVertPathEmpty(int x1, int y1, int y2, Piece p){
+    private ArrayList<Cell> createList(int x1, int x2, int y1, int y2){
 
+        ArrayList<Cell> cells = new ArrayList<Cell>();
 
-        System.out.println("x1: "+x1+" y1: "+y1+" y2: "+y2);
-        int i = (y1 - y2 > 0)? -1:1;        // y increment
-        int dy = Math.abs(y1 - y2);         // times to increment
+        int ix = (x1 - x2 > 0)? -1:1;
+        int iy = (y1 - y2 > 0)? -1:1;
 
-        for (int j = 0; j < dy; j++ ){
-            y1 += i;
-            if (board[y1][x1].isOccupied() && j == dy - 1 && isEnemyInCell(x1, y1, p.isWhite()) &&
-                    p.getType() != 'P'){
-                return true;
-            }
-            else if (board[y1][x1].isOccupied()){
-                System.out.println(board[y1][x1].getPiece());
-                System.out.println();
-                return false;
+        int adx = Math.abs(x1 - x2);
+        int ady = Math.abs(y1 - y2);
+
+        if (adx == ady){
+            for (int i = 0; i < adx; i++){
+                x1 += ix;
+                y1 += iy;
+                cells.add(board[y1][x1]);
             }
         }
-        return true;
-
-    }
-
-    private boolean isDiagPathEmpty(int x1, int y1, int x2, int y2, boolean white){
-
-        int i = (x1-x2>0)?-1:1;         // increment for x distance
-        int j = (y1-y2>0)?-1:1;         // increment for y distance
-        int dx = Math.abs(x1-x2);       // how many times to increment
-
-        for (int l = 0; dx > l; l++) {
-            if (board[x1][y1].isOccupied()){
-                if (l == dx - 1)return isEnemyInCell(x1, y1, white);
-                return false;
+        else if (adx == 0){
+            for (int i = 0; i<ady; i++){
+                y1 += iy;
+                cells.add(board[y1][x1]);
             }
-            x1 += i;
-            y1 += j;
+
         }
-        return true;
+        else if (ady == 0){
+            for (int i = 0; i<adx; i++){
+                x1 += ix;
+                cells.add(board[y1][x1]);
+            }
+        }
+        return cells;
+
     }
 
     // returns true if the piece in cell is opposite color
@@ -162,13 +166,13 @@ public class Board {
     }
 
     protected Cell getCell(int x, int y){
-        return board[x][y];
+        return board[y][x];
     }
 
     void print(){
         for (Cell[] row: board){
             for(Cell p: row){
-                if (p!=null) System.out.print(p.getPiece().getType());
+                if (p!=null) System.out.print(p.getPiece().getType() + " ");
 
             }
             System.out.println();
