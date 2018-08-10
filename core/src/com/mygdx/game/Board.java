@@ -11,6 +11,10 @@ public class Board {
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
+    protected boolean whiteCastleKing;
+    protected boolean whiteCastleQueen;
+    protected boolean blackCastleKing;
+    protected boolean blackCastleQueen;
     protected Stack<Integer> moves;
 
     public Board(){
@@ -19,11 +23,10 @@ public class Board {
         whiteChecked = false;
         blackChecked = false;
         board = new Cell[8][8];
-
+        moves = new Stack<Integer>();
 
         String whiteP = "RNBQKBNRPPPPPPPP";
         String blackP = "PPPPPPPPRNBQKBNR";
-
 
         // Board setup details
         for (int x = 0; x < 8 ; x++){
@@ -48,22 +51,31 @@ public class Board {
 
     // Given a piece and a destination, moves the piece to the cell if valid move
     protected Board movePiece(int x1, int y1, int x2, int y2){
+
         Cell c = board[y1][x1];
 
         if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
-            if (isMoveValid(c.getPiece(), x2, y2)){
+            if (isMoveValid(c.getPiece(), x2, y2)) {
                 board[y2][x2] = c;
                 c.getPiece().setY(y2);
                 c.getPiece().setX(x2);
                 board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
+                whiteTurn = false;
             }
-
         }
-
 
         if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
+            if (isMoveValid(c.getPiece(), x2, y2)) {
+                board[y2][x2] = c;
+                c.getPiece().setY(y2);
+                c.getPiece().setX(x2);
+                board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
+                whiteTurn = true;
 
+            }
         }
+
+        System.out.println("white move: "+ whiteTurn);
         return this;
     }
 
@@ -81,35 +93,22 @@ public class Board {
             // check knight moves
         }
 
-        else if (pt == 'B'){
-            // check diagonal paths
-        }
-        else if (pt == 'Q'){
-            if (dy == dx){
-                // check diagonal paths
+        else if (pt == 'R' || pt == 'Q' || pt == 'B' ){
+            ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
+            for (int i = 0; i<path.size(); i++){
+                if ((i == path.size() -1) && isEnemyInCell(x2,y2,p.isWhite())) return true;
+                if (path.get(i).isOccupied()) return false;
             }
-            else if (dy == 0){
-                // check horizontal path
-            }
-            else if (dx == 0){
-                //check vertical paths
-            }
-        }
-        else if (pt == 'R' ){
-            if (dy == 0){
-                // check horizontal paths
-            }
-            else if (dy == 0){
-                // check vertical paths
-            }
-
+            return true;
         }
         else if (pt == 'P'){
+            System.out.println("Pawn Move: dx: "+ dx+" dy: "+dy );
             // check for en passant
             if (false){
 
             }
             else if (dx == dy && dx == 1){
+
                 return isEnemyInCell(x2, y2, p.isWhite());
             }
             else if (dy == 0 && dx < 3){
@@ -159,11 +158,13 @@ public class Board {
 
     // returns true if the piece in cell is opposite color
     private boolean isEnemyInCell(int x, int y, boolean white){
-        if (board[x][y].isOccupied()){
-            return board[x][y].getPiece().isWhite() != white;
+
+        if (board[y][x].isOccupied()){
+            return board[y][x].getPiece().isWhite() != white;
         }
         return false;
     }
+
 
     protected Cell getCell(int x, int y){
         return board[y][x];
