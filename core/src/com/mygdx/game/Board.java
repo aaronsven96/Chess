@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import java.lang.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -11,10 +10,10 @@ public class Board {
     protected boolean whiteChecked;
     protected boolean blackChecked;
     protected boolean whiteTurn;
-    protected boolean whiteCastleKing;
-    protected boolean whiteCastleQueen;
-    protected boolean blackCastleKing;
-    protected boolean blackCastleQueen;
+    protected boolean whiteCKingAllow;
+    protected boolean whiteCQueenAllow;
+    protected boolean blackCQueenAllow;
+    protected boolean blackCKingAllow;
     protected Stack<Integer> moves;
 
     public Board(){
@@ -24,6 +23,10 @@ public class Board {
         blackChecked = false;
         board = new Cell[8][8];
         moves = new Stack<Integer>();
+        whiteCKingAllow = true;
+        whiteCQueenAllow = true;
+        blackCQueenAllow  = true;
+        blackCKingAllow = true;
 
         String whiteP = "RNBQKBNRPPPPPPPP";
         String blackP = "PPPPPPPPRNBQKBNR";
@@ -61,6 +64,18 @@ public class Board {
                 c.getPiece().setX(x2);
                 board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
                 whiteTurn = false;
+
+                // disable castling
+                if ((x1 == 0 && y1 == 0)) {
+                    whiteCQueenAllow = false;
+                }
+                else if(x1 == 0 && y1 == 7){
+                    whiteCKingAllow = false;
+                }
+                else if (c.getPiece().getType() == 'K'){
+                    whiteCKingAllow = false;
+                    whiteCQueenAllow = false;
+                }
             }
         }
 
@@ -71,7 +86,16 @@ public class Board {
                 c.getPiece().setX(x2);
                 board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
                 whiteTurn = true;
-
+                if ((x1 == 7 && y1 == 0)) {
+                    blackCKingAllow = false;
+                }
+                else if(x1 == 7 && y1 == 7){
+                    blackCQueenAllow = false;
+                }
+                else if (c.getPiece().getType() == 'K'){
+                    blackCKingAllow = false;
+                    blackCQueenAllow = false;
+                }
             }
         }
 
@@ -81,8 +105,8 @@ public class Board {
 
     // looks at destination cell and returns true if the path to the destination is empty and valid
     private boolean isMoveValid(Piece p, int x2, int y2) {
-        char pt = p.getType();
 
+        char pt = p.getType();
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
 
@@ -90,7 +114,11 @@ public class Board {
             // check king moves
         }
         else if (pt ==  'N'){
-            // check knight moves
+            if ((((x2 == p.getX() + 2)||(x2 == p.getX() - 2)) &&  ((y2 == p.getY() + 1) || (y2 == p.getY() - 1)))
+                || (((x2 == p.getX() + 1) || x2 == p.getX() - 1) && ((y2 == p.getY() + 2) || y2 == p.getY() -2))) {
+                if (board[y2][x2].isOccupied()) return isEnemyInCell(x2, y2, p.isWhite());
+                return true;
+            }
         }
 
         else if (pt == 'R' || pt == 'Q' || pt == 'B' ){
@@ -105,10 +133,8 @@ public class Board {
             System.out.println("Pawn Move: dx: "+ dx+" dy: "+dy );
             // check for en passant
             if (false){
-
             }
             else if (dx == dy && dx == 1){
-
                 return isEnemyInCell(x2, y2, p.isWhite());
             }
             else if (dy == 0 && dx < 3){
@@ -128,7 +154,6 @@ public class Board {
 
         int ix = (x1 - x2 > 0)? -1:1;
         int iy = (y1 - y2 > 0)? -1:1;
-
         int adx = Math.abs(x1 - x2);
         int ady = Math.abs(y1 - y2);
 
