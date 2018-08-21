@@ -111,7 +111,10 @@ public class Board {
         int dy = Math.abs(p.getY() - y2);
 
         if (pt == 'K'){
-            // check king moves
+            if (isEnemyInCell(x2, y2, p.isWhite()) &&  !isPieceAttacked(x2, y2, p.isWhite())){
+                return true;
+            }
+            return false;
         }
         else if (pt ==  'N'){
             if ((((x2 == p.getX() + 2)||(x2 == p.getX() - 2)) &&  ((y2 == p.getY() + 1) || (y2 == p.getY() - 1)))
@@ -190,8 +193,56 @@ public class Board {
         return false;
     }
 
+    private boolean isPieceAttacked(int x, int y, boolean white){
+        for (int i = 0; i< (7 - y); i++){
+            if(board[y+i][x].isOccupied()){
+                char p = board[y+i][x].getPiece().getType();
+                if (board[y+i][x].getPiece().isWhite() == white){
+                    break;
+                }
+                else if (p == 'Q' || p == 'R' || (p == 'K'&& i == 1)){
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i < (7 - y); i++){
+            if(board[y-i][x].isOccupied()) {
+                char p = board[y - i][x].getPiece().getType();
+                if (board[y - i][x].getPiece().isWhite() == white) {
+                    break;
+                } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                    return true;
+                }
+            }
+        }
+            for (int i = 0; i< (7 - y); i++){
+                if(board[y][x+i].isOccupied()){
+                    char p = board[y][x+i].getPiece().getType();
+                    if (board[y][x+i].getPiece().isWhite() == white){
+                        break;
+                    }
+                    else if (p == 'Q' || p == 'R' || (p == 'K'&& i == 1)){
+                        return true;
+                    }
+                }
+            }
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y][x-i].isOccupied()) {
+                    char p = board[y][x-i].getPiece().getType();
+                    if (board[y][x-i].getPiece().isWhite() == white) {
+                        break;
+                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                        return true;
+                    }
+                }
+            }
+            // need diagonals and knight check
 
-    protected Cell getCell(int x, int y){
+        return false;
+    }
+
+    protected Cell getCell(int x, int y)
+    {
         return board[y][x];
     }
 
@@ -199,7 +250,6 @@ public class Board {
         for (Cell[] row: board){
             for(Cell p: row){
                 if (p!=null) System.out.print(p.getPiece().getType() + " ");
-
             }
             System.out.println();
         }
