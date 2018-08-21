@@ -237,6 +237,7 @@ public class Board {
                 }
             }
             // need diagonals and knight check
+            // chck
 
         return false;
     }
