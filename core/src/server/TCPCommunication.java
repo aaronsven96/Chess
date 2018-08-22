@@ -14,6 +14,7 @@ import java.io.OutputStream;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import server.ThreadServer;
 
 import static com.badlogic.gdx.Net.Protocol.TCP;
 
@@ -72,6 +73,7 @@ public class TCPCommunication {
          System.out.println(thread);
          return returnData;
     }
+
 
     //Connects to Socket
     public Thread ConnectToSocket(final ConcurrentLinkedQueue<String> receive, final ConcurrentLinkedQueue<String> send, final String ipAddress,final int port) {
