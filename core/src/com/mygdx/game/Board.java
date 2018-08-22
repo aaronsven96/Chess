@@ -236,8 +236,119 @@ public class Board {
                     }
                 }
             }
-            // need diagonals and knight check
-            // chcked
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y-i][x-i].isOccupied()) {
+                    char p = board[y - i][x - i].getPiece().getType();
+                    if (board[y - i][x - i].getPiece().isWhite() == white) {
+                        break;
+                    } else if (p == 'Q' || p == 'B' || (p == 'K' && i == 1)) {
+                        return true;
+                    }
+                    else if (p == 'P'){
+                        if (board[y - i][x - i].getPiece().isWhite()) {
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y+i][x-i].isOccupied()) {
+                    char p = board[y + i][x - i].getPiece().getType();
+                    if (board[y + i][x - i].getPiece().isWhite() == white) {
+                        break;
+                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                        return true;
+                    }
+                    else if (p == 'P'){
+                        if (board[y + i][x - i].getPiece().isWhite()){
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y-i][x-i].isOccupied()) {
+                    char p = board[y- i ][x - i].getPiece().getType();
+                    if (board[y - i][x - i].getPiece().isWhite() == white) {
+                        break;
+                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                        return true;
+                    }else if (p == 'P'){
+                        if (board[y + i][x - i].getPiece().isWhite()){
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y-i][x+i].isOccupied()) {
+                    char p = board[y- i ][x + i].getPiece().getType();
+                    if (board[y - i][x + i].getPiece().isWhite() == white) {
+                        break;
+                    }else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                        return true;
+                    }else if (p == 'P'){
+                        if (!board[y - i][x + i].getPiece().isWhite()){
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < (7 - y); i++) {
+                if (board[y+i][x+i].isOccupied()) {
+                    char p = board[+ i ][x + i].getPiece().getType();
+                    if (board[y + i][x + i].getPiece().isWhite() == white) {
+                        break;
+                    }else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                        return true;
+                    }else if (p == 'P'){
+                        if (!board[y + i][x + i].getPiece().isWhite()){
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // checks knight positions
+
+
+            try {
+                if (board[y + 2][x + 1].getPiece().getType() == 'N' && board[y + 2][x + 1].getPiece().isWhite() != white) {
+                    return true;
+                }
+                if (board[y+2][x-1].getPiece().getType() == 'N' && board[y+2][x-1].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y+1][x-2].getPiece().getType() == 'N' && board[y+1][x-2].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y+1][x+2].getPiece().getType() == 'N' && board[y+1][x+2].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y-1][x+2].getPiece().getType() == 'N' && board[y-1][x+2].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y-1][x-2].getPiece().getType() == 'N' && board[y-1][x-2].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y-2][x+1].getPiece().getType() == 'N' && board[y-2][x+1].getPiece().isWhite() != white){
+                    return true;
+                }
+                if (board[y-2][x-1].getPiece().getType() == 'N' && board[y-2][x-1].getPiece().isWhite() != white){
+                    return true;
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException e){
+
+            }
+
+
 
         return false;
     }
