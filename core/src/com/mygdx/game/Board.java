@@ -117,7 +117,11 @@ public class Board {
             if (isEnemyInCell(x2, y2, p.isWhite())){
                 return !isPieceAttacked(x2, y2, p.isWhite());
             }
-            return is
+            else if (board[y2][x2].isOccupied()){
+                return false;
+            }
+            return !isPieceAttacked(x2, y2, p.isWhite());
+
 
         }
         else if (pt ==  'N'){
