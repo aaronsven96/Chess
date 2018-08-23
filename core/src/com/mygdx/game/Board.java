@@ -57,7 +57,10 @@ public class Board {
 
         Cell c = board[y1][x1];
 
-        if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
+        if (x1 == x2 && y1 == y2){
+            return this;
+        }
+        else if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
             if (isMoveValid(c.getPiece(), x2, y2)) {
                 board[y2][x2] = c;
                 c.getPiece().setY(y2);
@@ -111,10 +114,11 @@ public class Board {
         int dy = Math.abs(p.getY() - y2);
 
         if (pt == 'K'){
-            if (isEnemyInCell(x2, y2, p.isWhite()) &&  !isPieceAttacked(x2, y2, p.isWhite())){
-                return true;
+            if (isEnemyInCell(x2, y2, p.isWhite())){
+                return !isPieceAttacked(x2, y2, p.isWhite());
             }
-            return false;
+            return is
+
         }
         else if (pt ==  'N'){
             if ((((x2 == p.getX() + 2)||(x2 == p.getX() - 2)) &&  ((y2 == p.getY() + 1) || (y2 == p.getY() - 1)))
@@ -357,13 +361,16 @@ public class Board {
                 }
             }
 
-            
+
         return false;
     }
 
     protected Cell getCell(int x, int y)
     {
         return board[y][x];
+    }
+    protected char getPiece(int x, int y){
+        return board[y][x].getPiece().getType();
     }
 
     void print(){
