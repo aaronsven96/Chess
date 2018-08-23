@@ -1,14 +1,12 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mygdx.game.screens.ConnectScreen;
 import com.mygdx.game.screens.MainScreen;
+
 
 
 public class MyGdxGame extends Game {

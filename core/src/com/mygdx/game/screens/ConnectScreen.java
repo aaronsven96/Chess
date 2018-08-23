@@ -37,7 +37,7 @@ public class ConnectScreen implements Screen {
                 System.out.println(tcpData.socket);
                 tcpData.socket.dispose();
                 tcpData.thread.interrupt();
-                game.setScreen(new MainScreen(game));
+                game.setScreen(new MultiplayerScreen(game));
             }
         });
         table.add(label);
@@ -49,7 +49,7 @@ public class ConnectScreen implements Screen {
     @Override
     public void render(float delta) {
         if (tcpData.thread.getState()==Thread.State.TERMINATED){
-            game.setScreen(new MainScreen(game));
+            game.setScreen(new MultiplayerScreen(game));
             this.dispose();
         }
         Gdx.gl.glClearColor(1, 2/3, 0, 1);
