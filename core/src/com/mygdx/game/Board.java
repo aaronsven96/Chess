@@ -316,40 +316,48 @@ public class Board {
             }
 
             // checks knight positions
-
-
-            try {
+            if (y < 6 && x < 7){
                 if (board[y + 2][x + 1].getPiece().getType() == 'N' && board[y + 2][x + 1].getPiece().isWhite() != white) {
+                return true;
+                }
+            }
+            if (y < 6 && x > 0){
+                if (board[y+2][x-1].getPiece().getType() == 'N' && board[y+2][x-1].getPiece().isWhite() != white) {
                     return true;
                 }
-                if (board[y+2][x-1].getPiece().getType() == 'N' && board[y+2][x-1].getPiece().isWhite() != white){
+            }
+            if (y < 7 && x > 2){
+                if (board[y+1][x-2].getPiece().getType() == 'N' && board[y+1][x-2].getPiece().isWhite() != white) {
+                return true;
+                }
+            }
+            if (y < 7 && x <  6){
+                if (board[y+1][x+2].getPiece().getType() == 'N' && board[y+1][x+2].getPiece().isWhite() != white) {
                     return true;
                 }
-                if (board[y+1][x-2].getPiece().getType() == 'N' && board[y+1][x-2].getPiece().isWhite() != white){
+            }
+            if (y > 0 && x < 6) {
+                if (board[y - 1][x + 2].getPiece().getType() == 'N' && board[y - 1][x + 2].getPiece().isWhite() != white) {
                     return true;
                 }
-                if (board[y+1][x+2].getPiece().getType() == 'N' && board[y+1][x+2].getPiece().isWhite() != white){
-                    return true;
-                }
-                if (board[y-1][x+2].getPiece().getType() == 'N' && board[y-1][x+2].getPiece().isWhite() != white){
-                    return true;
-                }
+            }
+            if (y > 0 &&  x > 1){
                 if (board[y-1][x-2].getPiece().getType() == 'N' && board[y-1][x-2].getPiece().isWhite() != white){
                     return true;
                 }
-                if (board[y-2][x+1].getPiece().getType() == 'N' && board[y-2][x+1].getPiece().isWhite() != white){
-                    return true;
-                }
-                if (board[y-2][x-1].getPiece().getType() == 'N' && board[y-2][x-1].getPiece().isWhite() != white){
+            }
+            if (y > 1 && x < 7){
+                if (board[y-2][x+1].getPiece().getType() == 'N' && board[y-2][x+1].getPiece().isWhite() != white) {
                     return true;
                 }
             }
-            catch(ArrayIndexOutOfBoundsException e){
-
+            if (y > 1 && x > 0){
+                if (board[y-2][x-1].getPiece().getType() == 'N' && board[y-2][x-1].getPiece().isWhite() != white) {
+                    return true;
+                }
             }
 
-
-
+            
         return false;
     }
 
