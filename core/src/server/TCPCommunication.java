@@ -33,7 +33,7 @@ public class TCPCommunication {
                 hints.acceptTimeout=0; //waits forever
                 ServerSocket server = null;
                 try {
-                     server= Gdx.net.newServerSocket(TCP, port,  hints);
+                    server= Gdx.net.newServerSocket(TCP, port,  hints);
                 }
                 catch (com.badlogic.gdx.utils.GdxRuntimeException e){
                     return;
@@ -68,10 +68,10 @@ public class TCPCommunication {
                 System.out.println("working");
             }
         });
-         thread.start();
-         returnData.thread=thread;
-         System.out.println(thread);
-         return returnData;
+        thread.start();
+        returnData.thread=thread;
+        System.out.println(thread);
+        return returnData;
     }
 
 
@@ -143,4 +143,3 @@ public class TCPCommunication {
         return result.toString("UTF-8");
     }
 }
-

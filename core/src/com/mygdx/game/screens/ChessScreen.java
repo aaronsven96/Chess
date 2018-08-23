@@ -12,6 +12,9 @@ public class ChessScreen implements Screen {
     public ChessScreen(MyGdxGame game, Thread tcpSys){
         this.game=game;
     }
+    public ChessScreen(MyGdxGame game){
+        this.game=game;
+    }
     @Override
     public void show() {
 
