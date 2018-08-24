@@ -57,59 +57,62 @@ public class Board {
 
         Cell c = board[y1][x1];
 
+        // catch non-moves
         if (x1 == x2 && y1 == y2){
             return this;
         }
-        else if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
+
+        // check that the player is moving the correct color piece
+        else if ((whiteTurn && c.getPiece().isWhite())|| !whiteTurn && !c.getPiece().isWhite()){
             if (isMoveValid(c.getPiece(), x2, y2)) {
+
+                // disable white castling
+                if (whiteTurn) {
+                    if (c.getPiece().getType() == 'K') {
+                        whiteCKingAllow = false;
+                        whiteCQueenAllow = false;
+                    } else if ((x1 == 0 && y1 == 0)) {
+                        whiteCQueenAllow = false;
+                    } else if (x1 == 0 && y1 == 7) {
+                        whiteCKingAllow = false;
+                    }
+                }
+                // disable black castling
+                else{
+                    if (c.getPiece().getType() == 'K') {
+                        blackCKingAllow = false;
+                        blackCQueenAllow = false;
+                    }
+                    else if ((x1 == 7 && y1 == 0)) {
+                        blackCKingAllow = false;
+                    }
+                    else if(x1 == 7 && y1 == 7){
+                        blackCQueenAllow = false;
+                    }
+                }
+
+                // castle king-side
                 if (c.getPiece().getType() == 'K' && y2-y1==2){
                     board[y2-1][x2] = board[y2+1][x2];
+                    board[y2-1][x2].getPiece().updatePos(x2, y2-1);
                     board[y2+1][x2] = new Cell(false, new Piece('E',false,x2, y2+1 ));
                 }
+                // castle queen-side
                 else if (c.getPiece().getType() == 'K' && y2-y1 == -2){
                     board[y2+1][x2] = board[y2-2][x2];
+                    board[y2+1][x2].getPiece().updatePos(x2, y2+1);
                     board[y2-2][x2] = new Cell(false, new Piece('E',false,x2, y2-2 ));
                 }
-                board[y2][x2] = c;
-                c.getPiece().setY(y2);
-                c.getPiece().setX(x2);
-                board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
-                whiteTurn = false;
 
-                // disable castling
-                if ((x1 == 0 && y1 == 0)) {
-                    whiteCQueenAllow = false;
-                }
-                else if(x1 == 0 && y1 == 7){
-                    whiteCKingAllow = false;
-                }
-                else if (c.getPiece().getType() == 'K'){
-                    whiteCKingAllow = false;
-                    whiteCQueenAllow = false;
-                }
+                // move pieces
+                board[y2][x2] = c;
+                board[y2][x2].getPiece().updatePos(x2, y2);
+                board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
+
+                // change player to move
+                whiteTurn = !whiteTurn;
             }
         }
-
-        if (!whiteTurn && !blackChecked && !c.getPiece().isWhite() && c.getPiece().getType() != 'E'){
-            if (isMoveValid(c.getPiece(), x2, y2)) {
-                board[y2][x2] = c;
-                c.getPiece().setY(y2);
-                c.getPiece().setX(x2);
-                board[y1][x1] = new Cell(false, new Piece('E', false, x1, y1));
-                whiteTurn = true;
-                if ((x1 == 7 && y1 == 0)) {
-                    blackCKingAllow = false;
-                }
-                else if(x1 == 7 && y1 == 7){
-                    blackCQueenAllow = false;
-                }
-                else if (c.getPiece().getType() == 'K'){
-                    blackCKingAllow = false;
-                    blackCQueenAllow = false;
-                }
-            }
-        }
-
         System.out.println("white move: "+ whiteTurn);
         return this;
     }

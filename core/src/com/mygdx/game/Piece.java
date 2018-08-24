@@ -37,6 +37,11 @@ class Piece {
         this.y = y;
     }
 
+    protected void updatePos(int x, int y){
+        this.setX(x);
+        this.setY(y);
+    }
+
     public String toString(){
         return "TYPE: " + type + " POS: (" + x + ", " + y + ")" + " WHITE: " + white;
     }
