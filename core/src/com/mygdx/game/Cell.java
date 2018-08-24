@@ -18,9 +18,10 @@ class Cell {
         return occupied;
     }
 
-    public Piece getPiece(){
+    protected Piece getPiece(){
         return piece;
     }
     
+
 
 }

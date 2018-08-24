@@ -13,31 +13,31 @@ class Piece {
         this.y = y;
     }
 
-    protected int getX(){
+    public int getX(){
         return this.x;
     }
 
-    protected int getY(){
+    public int getY(){
         return this.y;
     }
 
-    protected char getType(){
+    public char getType(){
         return this.type;
     }
 
-    protected boolean isWhite(){
+    public boolean isWhite(){
         return this.white;
     }
 
-    protected void setX(int x){
+    public void setX(int x){
         this.x = x;
     }
 
-    protected void setY(int y){
+    public void setY(int y){
         this.y = y;
     }
 
-    protected void updatePos(int x, int y){
+    public void updatePos(int x, int y){
         this.setX(x);
         this.setY(y);
     }
