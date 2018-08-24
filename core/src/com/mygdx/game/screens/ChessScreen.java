@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Board;
 import com.mygdx.game.Cell;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Piece;
 
 import java.util.ArrayList;
 
@@ -51,34 +52,38 @@ public class ChessScreen implements Screen, InputProcessor {
     public void render(float delta) {
         game.gameBatch.begin();
         game.gameBatch.draw(board,0,0);
-
+        drawPieces(chessGame,game.gameBatch);
         game.gameBatch.end();
     }
     private void drawPieces(Board game,SpriteBatch batch){
         for (int x=0;x<8;x++){
             for(int y=0;y<8;y++){
-                game.getCell(x,y).getPiece();
+                Piece piece=game.getCell(x,y).getPiece();
+                Sprite sPiece=getCharToSprite(piece);
+                if (sPiece!=null) {
+                    drawAtPosition(sPiece, batch, x, y);
+                }
             }
         }
     }
-    private Sprite getCharToSprite(char piece,Boolean isWhite){
+    private Sprite getCharToSprite(Piece piece){
         Array<Sprite> pieces=bPieces;
-        if (isWhite){
+        if (piece.isWhite()){
             pieces=wPieces;
         }
-        switch (piece) {
+        switch (piece.getType()) {
             case 'K':
-                return pieces.get(0);
+                return pieces.get(1);
             case 'N':
                 return pieces.get(2);
             case 'R':
-                return pieces.get(4);
-            case 'Q':
-                return pieces.get(1);
-            case 'B':
-                return pieces.get(3);
-            case 'P':
                 return pieces.get(5);
+            case 'Q':
+                return pieces.get(4);
+            case 'B':
+                return pieces.get(0);
+            case 'P':
+                return pieces.get(3);
         }
         return null;
     }
