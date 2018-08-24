@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-class Cell {
+public class Cell {
 
     private boolean occupied;
     private Piece piece;

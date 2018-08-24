@@ -407,8 +407,19 @@ public class Board {
     }
 
 
-    protected char getPiece(int x, int y){
+    protected char getPieceType(int x, int y){
         return board[y][x].getPiece().getType();
+    }
+
+    protected int findKing(boolean white){
+        for (Cell [] row: board){
+            for (Cell p: row){
+                if (p.getPiece().getType() == 'K' && white == p.getPiece().isWhite() ){
+                    return (p.getPiece().getX() * 10 + p.getPiece().getY());
+                }
+            }
+        }
+        return 0;
     }
 
     void print(){
