@@ -1,0 +1,48 @@
+
+WhitePieces.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+WhiteBishop
+  rotate: false
+  xy: 113, 5
+  size: 27, 37
+  orig: 27, 37
+  offset: 0, 0
+  index: -1
+WhiteKing
+  rotate: false
+  xy: 2, 2
+  size: 37, 40
+  orig: 37, 40
+  offset: 0, 0
+  index: -1
+WhiteKnight
+  rotate: false
+  xy: 80, 5
+  size: 31, 37
+  orig: 31, 37
+  offset: 0, 0
+  index: -1
+WhitePawn
+  rotate: false
+  xy: 172, 11
+  size: 24, 31
+  orig: 24, 31
+  offset: 0, 0
+  index: -1
+WhiteQueen
+  rotate: false
+  xy: 41, 5
+  size: 37, 37
+  orig: 37, 37
+  offset: 0, 0
+  index: -1
+WhiteRook
+  rotate: false
+  xy: 142, 8
+  size: 28, 34
+  orig: 28, 34
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,48 @@
+
+BlackPieces.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BlackBishop
+  rotate: false
+  xy: 118, 2
+  size: 29, 40
+  orig: 29, 40
+  offset: 0, 0
+  index: -1
+BlackKing
+  rotate: false
+  xy: 43, 2
+  size: 38, 40
+  orig: 38, 40
+  offset: 0, 0
+  index: -1
+BlackKnight
+  rotate: false
+  xy: 83, 3
+  size: 33, 39
+  orig: 33, 39
+  offset: 0, 0
+  index: -1
+BlackPawn
+  rotate: false
+  xy: 180, 9
+  size: 27, 33
+  orig: 27, 33
+  offset: 0, 0
+  index: -1
+BlackQueen
+  rotate: false
+  xy: 2, 3
+  size: 39, 39
+  orig: 39, 39
+  offset: 0, 0
+  index: -1
+BlackRook
+  rotate: false
+  xy: 149, 6
+  size: 29, 36
+  orig: 29, 36
+  offset: 0, 0
+  index: -1
