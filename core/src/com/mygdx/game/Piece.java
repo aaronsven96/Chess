@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-class Piece {
+public class Piece {
 
     private char type;
     private boolean white;
