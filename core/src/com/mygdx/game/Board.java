@@ -404,7 +404,7 @@ public class Board {
         return false;
     }
 
-    protected Cell getCell(int x, int y)
+    public Cell getCell(int x, int y)
     {
         return board[y][x];
     }
