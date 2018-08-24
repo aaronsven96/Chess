@@ -21,7 +21,4 @@ class Cell {
     public Piece getPiece(){
         return piece;
     }
-
-
-
 }
