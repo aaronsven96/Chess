@@ -124,72 +124,66 @@ public class Board {
         int dx = Math.abs(p.getX() - x2);
         int dy = Math.abs(p.getY() - y2);
 
-        if (pt == 'K'){
-            if (dx > 1) return false;
-            else if (dx == 0 && dy == 2){
-                if (x2 == 0 && y2 == 6 && whiteCKingAllow && !board[0][6].isOccupied() && !board[0][5].isOccupied()
-                        && !isPieceAttacked(0, 6, p.isWhite())&& isPieceAttacked(0, 5,p.isWhite())
-                        && !isPieceAttacked(0, 4, p.isWhite())) {
-                    return true;
+        switch (pt) {
+            case 'K':
+                if (dx > 1) return false;
+                else if (dx == 0 && dy == 2) {
+                    if (x2 == 0 && y2 == 6 && whiteCKingAllow && !board[0][6].isOccupied() && !board[0][5].isOccupied()
+                            && !isPieceAttacked(0, 6, p.isWhite()) && isPieceAttacked(0, 5, p.isWhite())
+                            && !isPieceAttacked(0, 4, p.isWhite())) {
+                        return true;
+                    } else if (x2 == 0 && y2 == 2 && whiteCQueenAllow && !board[0][1].isOccupied() && !board[0][2].isOccupied()
+                            && !board[0][3].isOccupied() && !isPieceAttacked(0, 2, p.isWhite()) &&
+                            isPieceAttacked(0, 3, p.isWhite()) && !isPieceAttacked(0, 4, p.isWhite())) {
+                        return true;
+                    } else if (x2 == 7 && y2 == 2 && blackCKingAllow && !board[7][6].isOccupied() && !board[7][5].isOccupied()
+                            && !isPieceAttacked(7, 6, p.isWhite()) && isPieceAttacked(7, 5, p.isWhite())
+                            && !isPieceAttacked(7, 4, p.isWhite())) {
+                        return true;
+                    } else if (x2 == 7 && y2 == 2 && blackCQueenAllow && !board[7][1].isOccupied() && !board[7][2].isOccupied()
+                            && !board[7][3].isOccupied() && !isPieceAttacked(7, 2, p.isWhite()) &&
+                            isPieceAttacked(7, 3, p.isWhite()) && !isPieceAttacked(7, 4, p.isWhite())) {
+                        return true;
+                    }
+                    return false;
+                } else if (isEnemyInCell(x2, y2, p.isWhite())) {
+                    return !isPieceAttacked(x2, y2, p.isWhite());
+                } else if (board[y2][x2].isOccupied()) {
+                    return false;
                 }
-                else if (x2 == 0 && y2 == 2 && whiteCQueenAllow && !board[0][1].isOccupied() && !board[0][2].isOccupied()
-                        && !board[0][3].isOccupied() && !isPieceAttacked(0, 2, p.isWhite()) &&
-                        isPieceAttacked(0, 3, p.isWhite()) && !isPieceAttacked(0, 4, p.isWhite())){
-                    return true;
-                }
-                else if (x2 == 7 && y2 == 2 && blackCKingAllow && !board[7][6].isOccupied() && !board[7][5].isOccupied()
-                        && !isPieceAttacked(7, 6, p.isWhite()) && isPieceAttacked(7, 5, p.isWhite())
-                        && !isPieceAttacked(7, 4, p.isWhite())){
-                    return true;
-                }
-                else if (x2 == 7 && y2 == 2 && blackCQueenAllow && !board[7][1].isOccupied() && !board[7][2].isOccupied()
-                        && !board[7][3].isOccupied() && !isPieceAttacked(7, 2, p.isWhite()) &&
-                        isPieceAttacked(7, 3, p.isWhite()) && !isPieceAttacked(7, 4, p.isWhite())){
-                    return true;
-                }
-                return false;
-            }
-            else if (isEnemyInCell(x2, y2, p.isWhite())){
                 return !isPieceAttacked(x2, y2, p.isWhite());
-            }
-            else if (board[y2][x2].isOccupied()){
-                return false;
-            }
-            return !isPieceAttacked(x2, y2, p.isWhite());
 
 
-        }
-        else if (pt ==  'N'){
-            if ((((x2 == p.getX() + 2)||(x2 == p.getX() - 2)) &&  ((y2 == p.getY() + 1) || (y2 == p.getY() - 1)))
-                || (((x2 == p.getX() + 1) || x2 == p.getX() - 1) && ((y2 == p.getY() + 2) || y2 == p.getY() -2))) {
-                if (board[y2][x2].isOccupied()) return isEnemyInCell(x2, y2, p.isWhite());
-                return true;
-            }
-        }
-
-        else if (pt == 'R' || pt == 'Q' || pt == 'B' ){
-            ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
-            for (int i = 0; i<path.size(); i++){
-                if ((i == path.size() -1) && isEnemyInCell(x2,y2,p.isWhite())) return true;
-                if (path.get(i).isOccupied()) return false;
-            }
-            return true;
-        }
-        else if (pt == 'P'){
-            System.out.println("Pawn Move: dx: "+ dx+" dy: "+dy );
-            // check for en passant
-            if (false){
-            }
-            else if (dx == dy && dx == 1){
-                return isEnemyInCell(x2, y2, p.isWhite());
-            }
-            else if (dy == 0 && dx < 3){
+            case 'N':
+                if ((((x2 == p.getX() + 2) || (x2 == p.getX() - 2)) && ((y2 == p.getY() + 1) || (y2 == p.getY() - 1)))
+                        || (((x2 == p.getX() + 1) || x2 == p.getX() - 1) && ((y2 == p.getY() + 2) || y2 == p.getY() - 2))) {
+                    if (board[y2][x2].isOccupied()) return isEnemyInCell(x2, y2, p.isWhite());
+                    return true;
+                }
+                break;
+            case 'R':
+            case 'Q':
+            case 'B':
                 ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
-                for (Cell c: path){
-                    if (c.isOccupied()) return false;
+                for (int i = 0; i < path.size(); i++) {
+                    if ((i == path.size() - 1) && isEnemyInCell(x2, y2, p.isWhite())) return true;
+                    if (path.get(i).isOccupied()) return false;
                 }
                 return true;
-            }
+            case 'P':
+                System.out.println("Pawn Move: dx: " + dx + " dy: " + dy);
+                // check for en passant
+                if (false) {
+                } else if (dx == dy && dx == 1) {
+                    return isEnemyInCell(x2, y2, p.isWhite());
+                } else if (dy == 0 && dx < 3) {
+                    ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
+                    for (Cell c : path) {
+                        if (c.isOccupied()) return false;
+                    }
+                    return true;
+                }
+                break;
         }
         return false;
     }
