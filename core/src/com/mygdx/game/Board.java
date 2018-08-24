@@ -114,7 +114,31 @@ public class Board {
         int dy = Math.abs(p.getY() - y2);
 
         if (pt == 'K'){
-            if (isEnemyInCell(x2, y2, p.isWhite())){
+            if (dx > 1) return false;
+            else if (dx == 0 && dy == 2){
+                if (x2 == 0 && y2 == 6 && whiteCKingAllow && !board[0][6].isOccupied() && !board[0][5].isOccupied()
+                        && !isPieceAttacked(0, 6, p.isWhite())&& isPieceAttacked(0, 5,p.isWhite())
+                        && !isPieceAttacked(0, 4, p.isWhite())) {
+                    return true;
+                }
+                else if (x2 == 0 && y2 == 2 && whiteCQueenAllow && !board[0][1].isOccupied() && !board[0][2].isOccupied()
+                        && !board[0][3].isOccupied() && !isPieceAttacked(0, 2, p.isWhite()) &&
+                        isPieceAttacked(0, 3, p.isWhite()) && !isPieceAttacked(0, 4, p.isWhite())){
+                    return true;
+                }
+                else if (x2 == 7 && y2 == 2 && blackCKingAllow && !board[7][6].isOccupied() && !board[7][5].isOccupied()
+                        && !isPieceAttacked(7, 6, p.isWhite()) && isPieceAttacked(7, 5, p.isWhite())
+                        && !isPieceAttacked(7, 4, p.isWhite())){
+                    return true;
+                }
+                else if (x2 == 7 && y2 == 2 && blackCQueenAllow && !board[7][1].isOccupied() && !board[7][2].isOccupied()
+                        && !board[7][3].isOccupied() && !isPieceAttacked(7, 2, p.isWhite()) &&
+                        isPieceAttacked(7, 3, p.isWhite()) && !isPieceAttacked(7, 4, p.isWhite())){
+                    return true;
+                }
+                return false;
+            }
+            else if (isEnemyInCell(x2, y2, p.isWhite())){
                 return !isPieceAttacked(x2, y2, p.isWhite());
             }
             else if (board[y2][x2].isOccupied()){
