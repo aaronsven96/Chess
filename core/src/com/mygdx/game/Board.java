@@ -405,6 +405,8 @@ public class Board {
     {
         return board[y][x];
     }
+
+
     protected char getPiece(int x, int y){
         return board[y][x].getPiece().getType();
     }
