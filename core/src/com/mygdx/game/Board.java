@@ -62,6 +62,14 @@ public class Board {
         }
         else if (whiteTurn && c.getPiece().isWhite()){         // check if white is eligible to move
             if (isMoveValid(c.getPiece(), x2, y2)) {
+                if (c.getPiece().getType() == 'K' && y2-y1==2){
+                    board[y2-1][x2] = board[y2+1][x2];
+                    board[y2+1][x2] = new Cell(false, new Piece('E',false,x2, y2+1 ));
+                }
+                else if (c.getPiece().getType() == 'K' && y2-y1 == -2){
+                    board[y2+1][x2] = board[y2-2][x2];
+                    board[y2-2][x2] = new Cell(false, new Piece('E',false,x2, y2-2 ));
+                }
                 board[y2][x2] = c;
                 c.getPiece().setY(y2);
                 c.getPiece().setX(x2);
