@@ -7,8 +7,6 @@ import java.util.Stack;
 public class Board {
 
     protected Cell[][] board;
-    protected boolean whiteChecked;
-    protected boolean blackChecked;
     protected boolean whiteTurn;
     protected boolean whiteCKingAllow;
     protected boolean whiteCQueenAllow;
@@ -19,10 +17,7 @@ public class Board {
     public Board(){
 
         whiteTurn = true;
-        whiteChecked = false;
-        blackChecked = false;
         board = new Cell[8][8];
-        moves = new Stack<Integer>();
         whiteCKingAllow = true;
         whiteCQueenAllow = true;
         blackCQueenAllow  = true;
@@ -53,7 +48,7 @@ public class Board {
     }
 
     // Given a piece and a destination, moves the piece to the cell if valid move
-    protected Board movePiece(int x1, int y1, int x2, int y2){
+    public Board movePiece(int x1, int y1, int x2, int y2){
 
         Cell c = board[y1][x1];
 
@@ -65,6 +60,16 @@ public class Board {
         // check that the player is moving the correct color piece
         else if ((whiteTurn && c.getPiece().isWhite())|| !whiteTurn && !c.getPiece().isWhite()){
             if (isMoveValid(c.getPiece(), x2, y2)) {
+
+
+
+                // checks that move did not place king in check
+                int kl = findKing(whiteTurn);
+                if (isPieceAttacked(kl/10, kl%10, whiteTurn)){
+                    return this;
+                }
+
+                // adds moves to stack so can check for en passent
 
                 // disable white castling
                 if (whiteTurn) {
@@ -415,7 +420,7 @@ public class Board {
         for (Cell [] row: board){
             for (Cell p: row){
                 if (p.getPiece().getType() == 'K' && white == p.getPiece().isWhite() ){
-                    return (p.getPiece().getX() * 10 + p.getPiece().getY());
+                    return ((p.getPiece().getX() * 10) + p.getPiece().getY());
                 }
             }
         }
