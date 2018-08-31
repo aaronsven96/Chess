@@ -170,18 +170,48 @@ public class Board {
                 }
                 break;
             case 'R':
+                if (dx != 0 && dy != 0){
+                    return false;
+                }
+                ArrayList<Cell> rpath = createList(p.getX(), x2, p.getY(), y2);
+                for (int i = 0; i < rpath.size(); i++) {
+                    if ((i == rpath.size() - 1) && isEnemyInCell(x2, y2, p.isWhite())) return true;
+                    if (rpath.get(i).isOccupied()) return false;
+                }
+                return true;
             case 'Q':
-            case 'B':
+                if ((dx != 0 && dy != 0) && dx != dy){
+                    return false;
+                }
                 ArrayList<Cell> path = createList(p.getX(), x2, p.getY(), y2);
                 for (int i = 0; i < path.size(); i++) {
                     if ((i == path.size() - 1) && isEnemyInCell(x2, y2, p.isWhite())) return true;
                     if (path.get(i).isOccupied()) return false;
                 }
                 return true;
+            case 'B':
+                if (dx != dy){
+                    return false;
+                }
+                ArrayList<Cell> bpath = createList(p.getX(), x2, p.getY(), y2);
+                for (int i = 0; i < bpath.size(); i++) {
+                    if ((i == bpath.size() - 1) && isEnemyInCell(x2, y2, p.isWhite())) return true;
+                    if (bpath.get(i).isOccupied()) return false;
+                }
+                return true;
             case 'P':
                 System.out.println("Pawn Move: dx: " + dx + " dy: " + dy);
                 // check for en passant
                 if (false) {
+
+
+                }
+                else if ((p.isWhite() && dx >= 2 && p.getX() != 1)||
+                        (!p.isWhite() && dx >= 2 && p.getX() != 6)){
+                    return false;
+                }
+                else if ((p.isWhite() && (p.getX()-x2>0)) || (!p.isWhite() && (p.getX()-x2<0))) {
+                    return false;
                 } else if (dx == dy && dx == 1) {
                     return isEnemyInCell(x2, y2, p.isWhite());
                 } else if (dy == 0 && dx < 3) {
@@ -239,7 +269,9 @@ public class Board {
     }
 
     private boolean isPieceAttacked(int x, int y, boolean white){
-        for (int i = 0; i< (7 - y); i++){
+
+        // search down
+        for (int i = 0; i < (7 - y); i++){
             if(board[y+i][x].isOccupied()){
                 char p = board[y+i][x].getPiece().getType();
                 if (board[y+i][x].getPiece().isWhite() == white){
@@ -250,7 +282,9 @@ public class Board {
                 }
             }
         }
-        for (int i = 0; i < (7 - y); i++){
+
+        // search up
+        for (int i = 0; i <= y; i++){
             if(board[y-i][x].isOccupied()) {
                 char p = board[y - i][x].getPiece().getType();
                 if (board[y - i][x].getPiece().isWhite() == white) {
@@ -260,105 +294,109 @@ public class Board {
                 }
             }
         }
-            for (int i = 0; i< (7 - y); i++){
-                if(board[y][x+i].isOccupied()){
-                    char p = board[y][x+i].getPiece().getType();
-                    if (board[y][x+i].getPiece().isWhite() == white){
-                        break;
-                    }
-                    else if (p == 'Q' || p == 'R' || (p == 'K'&& i == 1)){
-                        return true;
-                    }
+        // search right
+        for (int i = 0; i< (7 - x); i++){
+            if(board[y][x+i].isOccupied()){
+                char p = board[y][x+i].getPiece().getType();
+                if (board[y][x+i].getPiece().isWhite() == white){
+                    break;
+                }
+                else if (p == 'Q' || p == 'R' || (p == 'K'&& i == 1)){
+                    return true;
                 }
             }
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y][x-i].isOccupied()) {
-                    char p = board[y][x-i].getPiece().getType();
-                    if (board[y][x-i].getPiece().isWhite() == white) {
-                        break;
-                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
-                        return true;
-                    }
+        }
+        // search left
+        for (int i = 0; i <= (x); i++) {
+            if (board[y][x-i].isOccupied()) {
+                char p = board[y][x-i].getPiece().getType();
+                if (board[y][x-i].getPiece().isWhite() == white) {
+                    break;
+                } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                    return true;
                 }
             }
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y-i][x-i].isOccupied()) {
-                    char p = board[y - i][x - i].getPiece().getType();
-                    if (board[y - i][x - i].getPiece().isWhite() == white) {
-                        break;
-                    } else if (p == 'Q' || p == 'B' || (p == 'K' && i == 1)) {
-                        return true;
-                    }
-                    else if (p == 'P'){
-                        if (board[y - i][x - i].getPiece().isWhite()) {
-                            return true;
-                        }
-                        break;
-                    }
-                }
-            }
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y+i][x-i].isOccupied()) {
-                    char p = board[y + i][x - i].getPiece().getType();
-                    if (board[y + i][x - i].getPiece().isWhite() == white) {
-                        break;
-                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
-                        return true;
-                    }
-                    else if (p == 'P'){
-                        if (board[y + i][x - i].getPiece().isWhite()){
-                            return true;
-                        }
-                        break;
-                    }
-                }
-            }
+        }
 
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y-i][x-i].isOccupied()) {
-                    char p = board[y- i ][x - i].getPiece().getType();
-                    if (board[y - i][x - i].getPiece().isWhite() == white) {
-                        break;
-                    } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+        // search up-left
+        for (int i = 0; i < (7 - y); i++) {
+            if (x-i < 0 || y-i < 0){
+                break;
+            }
+            if (board[y-i][x-i].isOccupied()) {
+                char p = board[y - i][x - i].getPiece().getType();
+                if (board[y - i][x - i].getPiece().isWhite() == white) {
+                    break;
+                } else if (p == 'Q' || p == 'B' || (p == 'K' && i == 1)) {
+                    return true;
+                }
+                else if (p == 'P' && i == 1){
+                    if (board[y - i][x - i].getPiece().isWhite()) {
                         return true;
-                    }else if (p == 'P'){
-                        if (board[y + i][x - i].getPiece().isWhite()){
-                            return true;
-                        }
-                        break;
                     }
+                    break;
                 }
             }
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y-i][x+i].isOccupied()) {
-                    char p = board[y- i ][x + i].getPiece().getType();
-                    if (board[y - i][x + i].getPiece().isWhite() == white) {
-                        break;
-                    }else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+        }
+        // search down-left
+        for (int i = 0; i < (7 - y); i++) {
+            if (x-i < 0 || y+i >7){
+                break;
+            }
+            if (board[y+i][x-i].isOccupied()) {
+                char p = board[y + i][x - i].getPiece().getType();
+                if (board[y + i][x - i].getPiece().isWhite() == white) {
+                    break;
+                } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                    return true;
+                }
+                else if (p == 'P' && i == 1){
+                    if (board[y + i][x - i].getPiece().isWhite()){
                         return true;
-                    }else if (p == 'P'){
-                        if (!board[y - i][x + i].getPiece().isWhite()){
-                            return true;
-                        }
-                        break;
                     }
+                    break;
                 }
             }
-            for (int i = 0; i < (7 - y); i++) {
-                if (board[y+i][x+i].isOccupied()) {
-                    char p = board[+ i ][x + i].getPiece().getType();
-                    if (board[y + i][x + i].getPiece().isWhite() == white) {
-                        break;
-                    }else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+        }
+
+        // search up-right
+        for (int i = 0; i < (7 - y); i++) {
+            if (y-i < 0 || x + i > 7){
+                break;
+            }
+            if (board[y-i][x+i].isOccupied()) {
+                char p = board[y- i ][x + i].getPiece().getType();
+                if (board[y - i][x + i].getPiece().isWhite() == white) {
+                    break;
+                } else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                    return true;
+                }else if (p == 'P' && i == 1){
+                    if (board[y -i][x + i].getPiece().isWhite()){
                         return true;
-                    }else if (p == 'P'){
-                        if (!board[y + i][x + i].getPiece().isWhite()){
-                            return true;
-                        }
-                        break;
                     }
+                    break;
                 }
             }
+        }
+        // search down-right
+        for (int i = 0; i < (7 - y); i++) {
+            if (y+i > 7 || x+i > 7){
+                break;
+            }
+            if (board[y+i][x+i].isOccupied()) {
+                char p = board[y + i ][x + i].getPiece().getType();
+                if (board[y + i][x + i].getPiece().isWhite() == white) {
+                    break;
+                }else if (p == 'Q' || p == 'R' || (p == 'K' && i == 1)) {
+                    return true;
+                }else if (p == 'P' && i == 1){
+                    if (!board[y + i][x + i].getPiece().isWhite()){
+                        return true;
+                    }
+                    break;
+                }
+            }
+        }
 
             // checks knight positions
             if (y < 6 && x < 7){
